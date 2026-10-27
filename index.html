@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>aura · music portfolio</title>
+  <!-- Font Awesome 6 (free) for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- GLOBAL RESET & VARIABLES ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0b0b10;
+      --surface: #15151f;
+      --card: #1e1e2a;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0c0;
+      --accent: #9d4edd;
+      --accent-glow: #b77aff;
+      --accent-soft: #c89aff;
+      --border-light: rgba(255, 255, 255, 0.05);
+      --radius: 1.5rem;
+      --radius-sm: 1rem;
+      --shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.8);
+      --transition: all 0.25s ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* subtle grid noise / texture */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(circle at 30% 10%, rgba(157, 78, 221, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(157, 78, 221, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* containers */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ----- HEADER / NAV ----- */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 20%, var(--accent-soft) 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .logo i {
+      font-size: 1.8rem;
+      background: none;
+      -webkit-text-fill-color: var(--accent-soft);
+      color: var(--accent-soft);
+      margin-right: 0.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: var(--transition);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-soft);
+    }
+
+    .btn-outline {
+      border: 1.5px solid var(--accent);
+      color: var(--text-primary) !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      background: transparent;
+      transition: var(--transition);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      color: #fff !important;
+      box-shadow: 0 0 18px rgba(157, 78, 221, 0.6);
+    }
+
+    /* ----- HERO SECTION ----- */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2.5rem;
+      padding: 3rem 0 2rem;
+    }
+
+    .hero-content {
+      flex: 1 1 350px;
+    }
+
+    .hero-content .badge {
+      display: inline-block;
+      background: rgba(157, 78, 221, 0.18);
+      color: var(--accent-soft);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 1rem;
+      border-radius: 3rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid rgba(157, 78, 221, 0.3);
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-content h1 span {
+      background: linear-gradient(to right, #ffffff, var(--accent-soft));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.9rem 2.2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: var(--transition);
+      cursor: pointer;
+      box-shadow: 0 8px 20px -6px rgba(157, 78, 221, 0.5);
+      text-decoration: none;
+    }
+
+    .btn-primary i {
+      font-size: 1.1rem;
+    }
+
+    .btn-primary:hover {
+      background: #b16ae0;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -6px rgba(157, 78, 221, 0.7);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-primary);
+      padding: 0.9rem 2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-soft);
+      background: rgba(157, 78, 221, 0.1);
+    }
+
+    .hero-visual {
+      flex: 1 1 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .vinyl-card {
+      background: linear-gradient(145deg, #1f1f2c, #13131c);
+      border-radius: 50%;
+      width: 280px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 30px 40px -15px #000000cc, 0 0 0 1px rgba(157, 78, 221, 0.2) inset, 0 0 40px rgba(157, 78, 221, 0.3);
+      position: relative;
+      transition: var(--transition);
+      animation: float 6s infinite alternate ease-in-out;
+    }
+
+    .vinyl-card::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(157, 78, 221, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .vinyl-inner {
+      width: 110px;
+      height: 110px;
+      background: var(--surface);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(157, 78, 221, 0.6);
+      box-shadow: 0 0 25px #9d4edd66;
+      position: relative;
+      z-index: 2;
+    }
+
+    .vinyl-inner i {
+      font-size: 3rem;
+      color: var(--accent-soft);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-12px) rotate(2deg); }
+    }
+
+    /* ----- TRACKS / FEATURED SECTION ----- */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin: 3.5rem 0 1.8rem;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-bottom: 1px dashed var(--accent-soft);
+      padding-bottom: 0.2rem;
+      transition: var(--transition);
+    }
+
+    .section-header a:hover {
+      color: var(--accent-soft);
+    }
+
+    .track-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .track-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.3rem 1.3rem;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(6px);
+    }
+
+    .track-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(157, 78, 221, 0.4);
+      box-shadow: 0 25px 35px -10px #000000, 0 0 0 1px rgba(157, 78, 221, 0.3);
+    }
+
+    .track-cover {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: linear-gradient(145deg, #2a1e3a, #1b1328);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      position: relative;
+      border: 1px solid rgba(157, 78, 221, 0.2);
+    }
+
+    .track-cover i {
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.7);
+      filter: drop-shadow(0 0 12px #9d4edd);
+    }
+
+    .track-info h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .track-info .artist {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .track-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .duration {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .play-btn {
+      background: rgba(157, 78, 221, 0.2);
+      border: none;
+      color: var(--accent-soft);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 1.2rem;
+    }
+
+    .play-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 18px #9d4edd;
+    }
+
+    /* ----- ABOUT / BIO STRIP ----- */
+    .bio-strip {
+      background: linear-gradient(145deg, #181822, #111118);
+      border-radius: var(--radius);
+      padding: 2.8rem 2rem;
+      margin: 3rem 0 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .bio-text {
+      flex: 2 1 300px;
+    }
+
+    .bio-text h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+    }
+
+    .bio-text h3 i {
+      color: var(--accent-soft);
+      margin-right: 0.5rem;
+    }
+
+    .bio-text p {
+      color: var(--text-secondary);
+      max-width: 600px;
+      font-size: 1.05rem;
+    }
+
+    .social-links {
+      flex: 1 1 200px;
+      display: flex;
+      justify-content: flex-start;
+      gap: 1.2rem;
+    }
+
+    .social-links a {
+      color: var(--text-secondary);
+      font-size: 1.6rem;
+      transition: var(--transition);
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.7rem;
+      border-radius: 50%;
+      border: 1px solid var(--border-light);
+    }
+
+    .social-links a:hover {
+      color: var(--accent-soft);
+      background: rgba(157, 78, 221, 0.15);
+      transform: scale(1.1);
+      border-color: var(--accent-soft);
+    }
+
+    /* ----- FOOTER ----- */
+    .footer {
+      margin-top: 3rem;
+      padding: 2rem 0 2.5rem;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      gap: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-soft);
+    }
+
+    /* ----- RESPONSIVE ADJUSTMENTS ----- */
+    @media (max-width: 900px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem 0;
+      }
+
+      .nav-links {
+        gap: 1.2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 2rem 0 1rem;
+      }
+
+      .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-desc {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .vinyl-card {
+        width: 220px;
+        height: 220px;
+      }
+
+      .vinyl-inner {
+        width: 85px;
+        height: 85px;
+      }
+
+      .vinyl-inner i {
+        font-size: 2.3rem;
+      }
+
+      .bio-strip {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.2rem;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 0 1.2rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn-primary, .btn-secondary {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .track-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .vinyl-card {
+        width: 180px;
+        height: 180px;
+      }
+
+      .vinyl-inner {
+        width: 70px;
+        height: 70px;
+      }
+
+      .vinyl-inner i {
+        font-size: 1.8rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.6rem;
+      }
+
+      .bio-text h3 {
+        font-size: 1.7rem;
+      }
+    }
+
+    /* optional smooth appearance */
+    img, .track-card, .bio-strip {
+      transition: var(--transition);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="logo">
+        <i class="fas fa-compact-disc"></i> aura
+      </div>
+      <nav class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Music</a>
+        <a href="#">About</a>
+        <a href="#" class="btn-outline">Contact</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <span class="badge">new album out now</span>
+        <h1>Echoes of<br><span>Midnight</span></h1>
+        <p class="hero-desc">A journey through ambient textures & deep house. Stream the latest release and explore the soundscapes.</p>
+        <div class="hero-buttons">
+          <a href="#" class="btn-primary">
+            <i class="fas fa-play"></i> Listen now
+          </a>
+          <a href="#" class="btn-secondary">
+            <i class="fas fa-record-vinyl"></i> Discography
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="vinyl-card">
+          <div class="vinyl-inner">
+            <i class="fas fa-music"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED TRACKS (3 cards) -->
+    <div class="section-header">
+      <h2>Featured tracks</h2>
+      <a href="#">view all <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i></a>
+    </div>
+
+    <div class="track-grid">
+      <!-- track 1 -->
+      <div class="track-card">
+        <div class="track-cover">
+          <i class="fas fa-headphones"></i>
+        </div>
+        <div class="track-info">
+          <h3>Neon Sky</h3>
+          <div class="artist">aura · single</div>
+          <div class="track-meta">
+            <span class="duration"><i class="far fa-clock"></i> 3:42</span>
+            <button class="play-btn" aria-label="play preview"><i class="fas fa-play"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- track 2 -->
+      <div class="track-card">
+        <div class="track-cover">
+          <i class="fas fa-water"></i>
+        </div>
+        <div class="track-info">
+          <h3>Deep Current</h3>
+          <div class="artist">aura · midnight EP</div>
+          <div class="track-meta">
+            <span class="duration"><i class="far fa-clock"></i> 4:18</span>
+            <button class="play-btn" aria-label="play preview"><i class="fas fa-play"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- track 3 -->
+      <div class="track-card">
+        <div class="track-cover">
+          <i class="fas fa-cloud-moon"></i>
+        </div>
+        <div class="track-info">
+          <h3>Lunar Drift</h3>
+          <div class="artist">aura · remix</div>
+          <div class="track-meta">
+            <span class="duration"><i class="far fa-clock"></i> 5:05</span>
+            <button class="play-btn" aria-label="play preview"><i class="fas fa-play"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIO / SOCIAL STRIP -->
+    <div class="bio-strip">
+      <div class="bio-text">
+        <h3><i class="fas fa-microphone-alt"></i> I'm aura</h3>
+        <p>Producer & DJ blending melodic house with ambient textures. My sound is inspired by late-night cityscapes and the spaces between silence.</p>
+      </div>
+      <div class="social-links">
+        <a href="#" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+        <a href="#" aria-label="SoundCloud"><i class="fab fa-soundcloud"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Apple Music"><i class="fab fa-apple"></i></a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div>© 2025 aura · all rights reserved</div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Press kit</a>
+      </div>
+    </footer>
+
+  </div> <!-- container end -->
+
+  <!-- tiny script for demo play buttons (no real audio, just a friendly alert) -->
+  <script>
+    (function() {
+      const playButtons = document.querySelectorAll('.play-btn');
+      playButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          // visual feedback only (demo)
+          const originalIcon = this.innerHTML;
+          this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+          this.disabled = true;
+          setTimeout(() => {
+            this.innerHTML = originalIcon;
+            this.disabled = false;
+            // optional: alert a fake preview
+            alert('🎵 Preview – "aura" track snippet (demo)');
+          }, 400);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
